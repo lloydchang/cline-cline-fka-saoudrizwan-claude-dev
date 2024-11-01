@@ -46,6 +46,8 @@ type GlobalStateKey =
 	| "lastShownAnnouncementId"
 	| "customInstructions"
 	| "alwaysAllowReadOnly"
+	| "alwaysAllowWrite"
+	| "alwaysAllowExecute"
 	| "taskHistory"
 	| "openAiBaseUrl"
 	| "openAiModelId"
@@ -188,18 +190,20 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 
 	async initClineWithTask(task?: string, images?: string[]) {
 		await this.clearTask() // ensures that an exising task doesn't exist before starting a new one, although this shouldn't be possible since user must clear task before starting a new one
-		const { apiConfiguration, customInstructions, alwaysAllowReadOnly } = await this.getState()
-		this.cline = new Cline(this, apiConfiguration, customInstructions, alwaysAllowReadOnly, task, images)
+		const { apiConfiguration, customInstructions, alwaysAllowReadOnly, alwaysAllowWrite, alwaysAllowExecute } = await this.getState()
+		this.cline = new Cline(this, apiConfiguration, customInstructions, alwaysAllowReadOnly, alwaysAllowWrite, alwaysAllowExecute, task, images)
 	}
 
 	async initClineWithHistoryItem(historyItem: HistoryItem) {
 		await this.clearTask()
-		const { apiConfiguration, customInstructions, alwaysAllowReadOnly } = await this.getState()
+		const { apiConfiguration, customInstructions, alwaysAllowReadOnly, alwaysAllowWrite, alwaysAllowExecute } = await this.getState()
 		this.cline = new Cline(
 			this,
 			apiConfiguration,
 			customInstructions,
 			alwaysAllowReadOnly,
+			alwaysAllowWrite,
+			alwaysAllowExecute,
 			undefined,
 			undefined,
 			historyItem
@@ -407,6 +411,20 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 						await this.updateGlobalState("alwaysAllowReadOnly", message.bool ?? undefined)
 						if (this.cline) {
 							this.cline.alwaysAllowReadOnly = message.bool ?? false
+						}
+						await this.postStateToWebview()
+						break
+					case "alwaysAllowWrite":
+						await this.updateGlobalState("alwaysAllowWrite", message.bool ?? undefined)
+						if (this.cline) {
+							this.cline.alwaysAllowWrite = message.bool ?? false
+						}
+						await this.postStateToWebview()
+						break
+					case "alwaysAllowExecute":
+						await this.updateGlobalState("alwaysAllowExecute", message.bool ?? undefined)
+						if (this.cline) {
+							this.cline.alwaysAllowExecute = message.bool ?? false
 						}
 						await this.postStateToWebview()
 						break
@@ -781,13 +799,15 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 	}
 
 	async getStateToPostToWebview() {
-		const { apiConfiguration, lastShownAnnouncementId, customInstructions, alwaysAllowReadOnly, taskHistory } =
+		const { apiConfiguration, lastShownAnnouncementId, customInstructions, alwaysAllowReadOnly, alwaysAllowWrite, alwaysAllowExecute, taskHistory } =
 			await this.getState()
 		return {
 			version: this.context.extension?.packageJSON?.version ?? "",
 			apiConfiguration,
 			customInstructions,
-			alwaysAllowReadOnly,
+			alwaysAllowReadOnly: alwaysAllowReadOnly ?? false,
+			alwaysAllowWrite: alwaysAllowWrite ?? false,
+			alwaysAllowExecute: alwaysAllowExecute ?? false,
 			uriScheme: vscode.env.uriScheme,
 			clineMessages: this.cline?.clineMessages || [],
 			taskHistory: (taskHistory || []).filter((item) => item.ts && item.task).sort((a, b) => b.ts - a.ts),
@@ -875,6 +895,8 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 			lastShownAnnouncementId,
 			customInstructions,
 			alwaysAllowReadOnly,
+			alwaysAllowWrite,
+			alwaysAllowExecute,
 			taskHistory,
 		] = await Promise.all([
 			this.getGlobalState("apiProvider") as Promise<ApiProvider | undefined>,
@@ -904,6 +926,8 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 			this.getGlobalState("lastShownAnnouncementId") as Promise<string | undefined>,
 			this.getGlobalState("customInstructions") as Promise<string | undefined>,
 			this.getGlobalState("alwaysAllowReadOnly") as Promise<boolean | undefined>,
+			this.getGlobalState("alwaysAllowWrite") as Promise<boolean | undefined>,
+			this.getGlobalState("alwaysAllowExecute") as Promise<boolean | undefined>,
 			this.getGlobalState("taskHistory") as Promise<HistoryItem[] | undefined>,
 		])
 
@@ -951,6 +975,8 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 			lastShownAnnouncementId,
 			customInstructions,
 			alwaysAllowReadOnly: alwaysAllowReadOnly ?? false,
+			alwaysAllowWrite: alwaysAllowWrite ?? false,
+			alwaysAllowExecute: alwaysAllowExecute ?? false,
 			taskHistory,
 		}
 	}
