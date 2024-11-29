@@ -47,7 +47,7 @@ After installation, Roo Cline will appear in your Cursor's installed extensions 
 <table>
 <tbody>
 <td align="center">
-<a href="https://marketplace.visualstudio.com/items?itemName=saoudrizwan.claude-dev" target="_blank"><strong>Download on VS Marketplace</strong> (requires Cursor IDE)</a>
+<a href="https://marketplace.visualstudio.com/items?itemName=RooVeterinaryInc.roo-cline" target="_blank"><strong>Download on VS Marketplace</strong> (requires Cursor IDE)</a>
 </td>
 <td align="center">
 <a href="https://discord.gg/cline" target="_blank"><strong>Join the Discord</strong></a>
