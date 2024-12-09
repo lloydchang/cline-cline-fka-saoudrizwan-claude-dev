@@ -97,6 +97,11 @@ Try asking Cline to "test the app", and watch as he runs a command like `npm run
 -   **`@file`:** Adds a file's contents so you don't have to waste API requests approving read file (+ type to search files)
 -   **`@folder`:** Adds folder's files all at once to speed up your workflow even more
 
+## How to Run the CLI
+
+To run the CLI, use the following command:
+```
+
 ## Contributing
 
 To contribute to the project, start by exploring [open issues](https://github.com/cline/cline/issues) or checking our [feature request board](https://github.com/cline/cline/discussions/categories/feature-requests?discussions_q=is%3Aopen+category%3A%22Feature+Requests%22+sort%3Atop). We'd also love to have you join our [Discord](https://discord.gg/cline) to share ideas and connect with other contributors. If you're interested in joining the team, check out our [careers page](https://cline.bot/join-us)!
