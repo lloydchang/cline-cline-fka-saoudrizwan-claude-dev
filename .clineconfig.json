@@ -20,8 +20,8 @@
     // API request settings
     "maxTokens": 4096, // Maximum number of tokens for API requests
     "temperature": 0.7, // Temperature setting for model responses
-    "retryAttempts": 3, // Number of retry attempts for failed API calls
-    "retryDelay": 1000, // Delay between retries in milliseconds
+    "retryAttempts": 5, // Updated number of retry attempts
+    "retryDelay": 2000, // Updated delay between retries in milliseconds
     
     // Caching options
     "enableCaching": true, // Enable caching of API responses
@@ -130,6 +130,15 @@
     "features": {
       "enableBetaFeatures": false, // Toggle for beta features
       "useExperimentalTools": false // Toggle for experimental tools
-    }
+    },
+
+    // External Modules
+    "externalModules": [
+      "vscode",
+      "other-module-if-needed",
+    ]
   }
 }
+
+// To run the CLI, use the following command:
+// cline run

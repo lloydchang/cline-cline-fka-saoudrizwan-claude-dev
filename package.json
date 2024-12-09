@@ -145,7 +145,7 @@
 		"test:webview": "cd webview-ui && npm run test",
 		"publish:marketplace": "vsce publish && ovsx publish",
 		"cli": "node ./dist/cli.js",
-		"build:cli": "esbuild src/cli.ts --bundle --outdir=dist --platform=node"
+		"build:cli": "esbuild src/cli.ts --bundle --outdir=dist --platform=node --external:vscode --minify"
 	},
 	"devDependencies": {
 		"@types/diff": "^5.2.1",

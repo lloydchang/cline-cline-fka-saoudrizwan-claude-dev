@@ -7,6 +7,7 @@ import { fileExistsAtPath } from './utils/fs'
 import { Anthropic } from "@anthropic-ai/sdk"
 import { Command } from 'commander';
 import * as winston from 'winston';
+import * as vscode from "vscode";
 
 // Initialize logger
 const logger = winston.createLogger({
