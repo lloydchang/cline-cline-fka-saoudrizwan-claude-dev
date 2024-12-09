@@ -1,0 +1,135 @@
+{
+  "apiProvider": "anthropic", // Options: "anthropic", "openai", "openrouter", "bedrock", "vertex", "ollama", "lmstudio", "gemini", "openai-native"
+  "apiKey": "your-api-key-here",
+  "modelId": "claude-3", // Example models: "claude-3", "gpt-4", "openai-gpt-3.5-turbo", etc.
+  "timeout": 5, // Task timeout in minutes
+  "debug": false, // Enable debug logging
+  "noSpinner": false, // Disable progress spinner
+  "additionalConfig": {
+    // Custom base URLs for different API providers
+    "anthropicBaseUrl": "https://api.anthropic.com",
+    "openaiBaseUrl": "https://api.openai.com",
+    "openrouterBaseUrl": "https://api.openrouter.com",
+    "bedrockBaseUrl": "https://api.bedrock.amazonaws.com",
+    "vertexBaseUrl": "https://api.vertex.ai",
+    "ollamaBaseUrl": "https://api.ollama.com",
+    "lmstudioBaseUrl": "https://api.lmstudio.com",
+    "geminiBaseUrl": "https://api.gemini.com",
+    "openaiNativeBaseUrl": "https://api.openai-native.com",
+    
+    // API request settings
+    "maxTokens": 4096, // Maximum number of tokens for API requests
+    "temperature": 0.7, // Temperature setting for model responses
+    "retryAttempts": 3, // Number of retry attempts for failed API calls
+    "retryDelay": 1000, // Delay between retries in milliseconds
+    
+    // Caching options
+    "enableCaching": true, // Enable caching of API responses
+    "cacheExpiry": 3600, // Cache expiry time in seconds
+    
+    // Logging settings
+    "logLevel": "info", // Logging level: "debug", "info", "warn", "error"
+    
+    // Additional tool configurations
+    "tools": {
+      "terminalManager": {
+        "shell": "/bin/bash", // Default shell for terminal commands
+        "cwd": "~/projects", // Default working directory
+        "theme": "dark", // Theme for terminal
+        "fontSize": 14 // Font size for terminal
+      },
+      "browserSession": {
+        "headless": true, // Run browser in headless mode
+        "timeout": 30000, // Browser session timeout in milliseconds
+        "defaultBrowser": "chromium" // Default browser for sessions
+      }
+    },
+    
+    // User-specific settings
+    "customInstructions": "Your custom instructions here",
+    "alwaysAllowReadOnly": false, // Always allow read-only operations
+    
+    // User Settings
+    "userSettings": {
+      "theme": "dark", // UI theme: "light", "dark"
+      "fontSize": 14, // Default font size
+      "language": "en-US" // Default language
+    },
+
+    // CLI Configuration
+    "cli": {
+      "defaultTask": "run", // Default CLI task to execute
+      "commandPrefix": "cline", // Prefix for CLI commands
+      "logFilePath": "./logs/cli.log", // Path to CLI log file
+      "historyFilePath": "./logs/cli-history.json" // Path to CLI history file
+    },
+
+    // Extension Settings
+    "extension": {
+      "autoUpdate": true, // Enable automatic updates
+      "notifications": {
+        "enabled": true, // Enable or disable notifications
+        "level": "info" // Notification level: "info", "warning", "error"
+      },
+      "views": {
+        "sidebar": {
+          "enableWebview": true, // Enable webview in sidebar
+          "refreshInterval": 300 // Refresh interval in seconds
+        }
+      }
+    },
+
+    // Logging Configuration
+    "logging": {
+      "fileLevel": "info", // Log level for file outputs
+      "consoleLevel": "debug", // Log level for console outputs
+      "logFile": "./logs/cline.log" // Path to main log file
+    },
+
+    // API Providers Specific Settings
+    "providers": {
+      "anthropic": {
+        "endpoint": "https://api.anthropic.com",
+        "apiVersion": "v1" // API version for Anthropics
+      },
+      "openai": {
+        "endpoint": "https://api.openai.com",
+        "apiVersion": "v1" // API version for OpenAI
+      },
+      "openrouter": {
+        "endpoint": "https://api.openrouter.com",
+        "apiVersion": "v2" // API version for OpenRouter
+      },
+      "bedrock": {
+        "endpoint": "https://api.bedrock.amazonaws.com",
+        "apiVersion": "2023-07-15" // Example API version
+      },
+      "vertex": {
+        "endpoint": "https://api.vertex.ai",
+        "apiVersion": "v1beta" // Example API version
+      },
+      "ollama": {
+        "endpoint": "https://api.ollama.com",
+        "apiVersion": "v1" // Example API version
+      },
+      "lmstudio": {
+        "endpoint": "https://api.lmstudio.com",
+        "apiVersion": "v1" // Example API version
+      },
+      "gemini": {
+        "endpoint": "https://api.gemini.com",
+        "apiVersion": "v2" // Example API version
+      },
+      "openai-native": {
+        "endpoint": "https://api.openai-native.com",
+        "apiVersion": "v1" // Example API version
+      }
+    },
+
+    // Feature Toggles
+    "features": {
+      "enableBetaFeatures": false, // Toggle for beta features
+      "useExperimentalTools": false // Toggle for experimental tools
+    }
+  }
+}

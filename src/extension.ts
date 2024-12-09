@@ -6,13 +6,14 @@ import { ClineProvider } from "./core/webview/ClineProvider"
 import { createClineAPI } from "./exports"
 import "./utils/path" // necessary to have access to String.prototype.toPosix
 import { DIFF_VIEW_URI_SCHEME } from "./integrations/editor/DiffViewProvider"
+import { Anthropic } from "@anthropic-ai/sdk"
 
 /*
 Built using https://github.com/microsoft/vscode-webview-ui-toolkit
 
 Inspired by
-https://github.com/microsoft/vscode-webview-ui-toolkit-samples/tree/main/default/weather-webview
-https://github.com/microsoft/vscode-webview-ui-toolkit-samples/tree/main/frameworks/hello-world-react-cra
+https://github.com/microsoft/vscode/vscode-webview-ui-toolkit-samples/tree/main/default/weather-webview
+https://github.com/microsoft/vscode/vscode-webview-ui-toolkit-samples/tree/main/frameworks/hello-world-react-cra
 
 */
 
@@ -89,6 +90,18 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
 		vscode.commands.registerCommand("cline.historyButtonClicked", () => {
 			sidebarProvider.postMessageToWebview({ type: "action", action: "historyButtonClicked" })
+		}),
+	)
+
+	context.subscriptions.push(
+		vscode.commands.registerCommand("cline.openCli", async () => {
+			const task = await vscode.window.showInputBox({
+				prompt: "Enter your task for Cline",
+				placeHolder: "e.g. Create a new React component",
+			})
+			if (task) {
+				await sidebarProvider.handleCliInput(task)
+			}
 		}),
 	)
 

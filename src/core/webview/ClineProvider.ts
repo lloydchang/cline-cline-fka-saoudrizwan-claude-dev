@@ -799,6 +799,7 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 	}
 
 	async clearTask() {
+		this.taskAborted = true
 		this.cline?.abortTask()
 		this.cline = undefined // removes reference to it, so once promises end it will be garbage collected
 	}
@@ -1041,5 +1042,45 @@ export class ClineProvider implements vscode.WebviewViewProvider {
 		vscode.window.showInformationMessage("State reset")
 		await this.postStateToWebview()
 		await this.postMessageToWebview({ type: "action", action: "chatButtonClicked" })
+	}
+
+	onTaskComplete?: () => void
+	onTaskError?: (error: Error) => void
+	private taskAborted = false
+
+	async handleCliInput(task: string) {
+		try {
+			const cwd = process.cwd()
+			if (!vscode.workspace.workspaceFolders?.some(f => f.uri.fsPath === cwd)) {
+				await vscode.workspace.updateWorkspaceFolders(0, 0, { uri: vscode.Uri.file(cwd) })
+			}
+
+			await this.initClineWithTask(task)
+
+			// Wait for task completion
+			await new Promise<void>((resolve, reject) => {
+				const check = setInterval(() => {
+					if (this.taskAborted) {
+						clearInterval(check)
+						reject(new Error('Task was aborted'))
+					} else if (!this.cline) {
+						clearInterval(check)
+						resolve()
+					}
+				}, 100)
+			})
+
+			// Check final state
+			if (this.cline?.didFinishAborting) {
+				this.onTaskError?.(new Error('Task was aborted'))
+			} else {
+				this.onTaskComplete?.()
+			}
+
+		} catch (error) {
+			this.taskAborted = true
+			this.onTaskError?.(error as Error)
+			throw error
+		}
 	}
 }

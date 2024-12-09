@@ -44,6 +44,9 @@
 	],
 	"activationEvents": [],
 	"main": "./dist/extension.js",
+	"bin": {
+		"cline": "./dist/cli.js"
+	},
 	"contributes": {
 		"viewsContainers": {
 			"activitybar": [
@@ -88,6 +91,11 @@
 				"command": "cline.openInNewTab",
 				"title": "Open In New Tab",
 				"category": "Cline"
+			},
+			{
+				"command": "cline.openCli",
+				"title": "Open CLI",
+				"category": "Cline"
 			}
 		],
 		"menus": {
@@ -129,12 +137,15 @@
 		"lint": "eslint src --ext ts",
 		"format": "prettier . --check",
 		"format:fix": "prettier . --write",
-		"test": "vscode-test",
+		"test": "npm run test:cli",
+		"test:cli": "mocha tests/cli.test.js",
 		"install:all": "npm install && cd webview-ui && npm install",
 		"start:webview": "cd webview-ui && npm run start",
 		"build:webview": "cd webview-ui && npm run build",
 		"test:webview": "cd webview-ui && npm run test",
-		"publish:marketplace": "vsce publish && ovsx publish"
+		"publish:marketplace": "vsce publish && ovsx publish",
+		"cli": "node ./dist/cli.js",
+		"build:cli": "esbuild src/cli.ts --bundle --outdir=dist --platform=node"
 	},
 	"devDependencies": {
 		"@types/diff": "^5.2.1",
@@ -152,9 +163,7 @@
 		"typescript": "^5.4.5"
 	},
 	"dependencies": {
-		"@anthropic-ai/bedrock-sdk": "^0.10.2",
 		"@anthropic-ai/sdk": "^0.26.0",
-		"@anthropic-ai/vertex-sdk": "^0.4.1",
 		"@google/generative-ai": "^0.18.0",
 		"@types/clone-deep": "^4.0.4",
 		"@types/pdf-parse": "^1.1.4",
@@ -163,6 +172,7 @@
 		"axios": "^1.7.4",
 		"cheerio": "^1.0.0",
 		"clone-deep": "^4.0.1",
+		"commander": "^11.0.0",
 		"default-shell": "^2.2.0",
 		"delay": "^6.0.0",
 		"diff": "^5.2.0",
@@ -181,6 +191,7 @@
 		"strip-ansi": "^7.1.0",
 		"tree-sitter-wasms": "^0.1.11",
 		"turndown": "^7.2.0",
-		"web-tree-sitter": "^0.22.6"
+		"web-tree-sitter": "^0.22.6",
+		"winston": "^3.10.0"
 	}
 }

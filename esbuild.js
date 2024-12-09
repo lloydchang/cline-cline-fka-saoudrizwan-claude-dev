@@ -80,6 +80,23 @@ const extensionConfig = {
 	external: ["vscode"],
 }
 
+// Build cli.ts with updated options
+esbuild.build({
+  entryPoints: ["./src/cli.ts"],
+  outfile: "./dist/cli.js",
+  bundle: true,
+  platform: "node",
+  external: [], // Ensure dependencies are bundled
+  format: "cjs",
+  banner: {
+    js: "#!/usr/bin/env node",
+  },
+  loader: {
+    '.test.ts': 'ignore', // Exclude test files
+  },
+})
+.catch(() => process.exit(1))
+
 async function main() {
 	const extensionCtx = await esbuild.context(extensionConfig)
 	if (watch) {

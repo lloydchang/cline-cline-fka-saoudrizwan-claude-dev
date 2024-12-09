@@ -1,4 +1,4 @@
-import { Anthropic } from "@anthropic-ai/sdk"
+import { Anthropic, Stream } from "@anthropic-ai/sdk"
 import { Stream as AnthropicStream } from "@anthropic-ai/sdk/streaming"
 import {
 	anthropicDefaultModelId,
@@ -173,4 +173,10 @@ export class AnthropicHandler implements ApiHandler {
 		}
 		return { id: anthropicDefaultModelId, info: anthropicModels[anthropicDefaultModelId] }
 	}
+}
+
+export function convertToOpenAiMessages(
+  anthropicMessages: Anthropic.MessageParam[],
+): OpenAI.Chat.ChatCompletionMessageParam[] {
+  // ...existing code...
 }
