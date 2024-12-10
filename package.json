@@ -145,7 +145,14 @@
 		"test:webview": "cd webview-ui && npm run test",
 		"publish:marketplace": "vsce publish && ovsx publish",
 		"cli": "node ./dist/cli.js",
-		"build:cli": "esbuild src/cli.ts --bundle --outdir=dist --platform=node --external:vscode --minify"
+		"build:cli": "esbuild src/cli.ts --bundle --outdir=dist --platform=node --external:vscode --external:winston --minify",
+		"vscode": "node ./dist/cli.js code",
+		"vscode:new": "node ./dist/cli.js code --new-window",
+		"vscode:diff": "node ./dist/cli.js code --diff",
+		"vscode:wait": "node ./dist/cli.js code --wait",
+		"vscode:reuse": "node ./dist/cli.js code --reuse-window",
+		"vscode:goto": "node ./dist/cli.js code --goto",
+		"vscode:help": "node ./dist/cli.js code --help"
 	},
 	"devDependencies": {
 		"@types/diff": "^5.2.1",
